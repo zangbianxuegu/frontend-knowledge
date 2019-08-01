@@ -168,12 +168,82 @@ forEach(weapons, function (index) {
 })
 ```
 
-## 函数参数
+## 递归
 
-函数声明一个参数，但是调用函数时可以传入任意数量的参数，也可以什么都不传。
-function f1 (param) {}，f1 (p1, p2, p3)，param 只能获取 p1。
+### 普通命名函数中的递归
 
-### 函数重载
+```js
+function chirp (n) {
+  return n - 1 ? chirp(n-1) + '-chirp' : 'chirp'
+}
+console.log(chirp(3)) // chirp-chirp-chirp
+```
+
+### 方法中的递归
+
+```js
+var ninja = {
+  chirp: function (n) {
+   return n - 1 ? ninja.chirp(n-1) + '-chirp' : 'chirp' 
+  }
+}
+console.log(ninja.chirp(3)) // chirp-chirp-chirp
+```
+
+### 引用的丢失问题
+
+```js
+var ninja = {
+  chirp: function (n) {
+   return n - 1 ? ninja.chirp(n-1) + '-chirp' : 'chirp' 
+  }
+}
+var samurai = {
+  chirp: ninja.chirp
+}
+ninja = {}
+try {
+  console.log(samurai.chirp(3))
+} catch (e) {
+  console.log("Uh, this isn't good") // Uh, this isn't good
+}
+```
+
+修复：
+
+```js
+var ninja = {
+  chirp: function (n) {
+   return n - 1 ? this.chirp(n-1) + '-chirp' : 'chirp' 
+  }
+}
+var samurai = {
+  chirp: ninja.chirp
+}
+ninja = {}
+try {
+  console.log(samurai.chirp(3)) // chirp-chirp-chirp
+} catch (e) {
+  console.log("Uh, this isn't good")
+}
+```
+
+内联命名函数：
+
+```js
+var ninja = {
+  chirp: signal (n) {
+   return n - 1 ? this.sigual(n-1) + '-chirp' : 'chirp' 
+  }
+}
+var samurai = {
+  chirp: ninja.chirp
+}
+ninja = {}
+
+```
+
+## 函数重载
 
 面向对象语言里，方法重载通常是通过在同名方法（但不同参数）里声明不同的实现来达到目的。但在 JavaScript 中，通过传入参数的特性和个数进行相应修改来达到目的。
 
