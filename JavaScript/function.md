@@ -420,9 +420,140 @@ console.log(ninja.find('Dean', 'Edwards')) // ["Dean Edwards"]
 console.log(ninja.find('Alex', 'Russell', 'Jr')) // undefined
 ```
 
+详细解析这个函数的原理：
 
+```js
+function addMethod (object, name, fn) {
+  var old = object[name]
+  object[name] = function () {
+    if (fn.length == arguments.length) {
+      console.log(0)
+      return fn.apply(this, arguments)
+    } else if (typeof old == 'function') {
+      console.log(1)
+      return old.apply(this, arguments)
+    }
+  }  
+}
+var ninja = {
+  values: ['Dean Edwards', 'Sam Stephenson', 'Alex Russell']
+}
+addMethod(ninja, 'find', function (first, last) { // ①
+  var ret = []
+  for (let i = 0; i < this.values.length; i++) {
+    if (this.values[i] == first + ' ' + last) {
+      ret.push(this.values[i])
+    }    
+  }
+  return ret
+})
 
+addMethod(ninja, 'find', function () { // ②
+  return this.values
+})
+addMethod(ninja, 'find', function (name) { // ③
+  var ret = []
+  for (var i = 0; i < this.values.length; i++) {
+    if (this.values[i].indexOf(name) == 0) {
+      ret.push(this.values[i])
+    }
+  }
+  return ret
+})
+console.log(ninja.find('Dean', 'Edwards'))
+// 1
+// 1
+// 0
+// ["Dean Edwards"]
+```
 
+一、
 
+addMethod 第一次执行 ①
+old 为 undefined
+执行定义对象的方法 ninja.find = XX，其中 fn 为 ① 的函数，即：
 
+```js
+function (first, last) {
+  var ret = []
+  for (let i = 0; i < this.values.length; i++) {
+    if (this.values[i] == first + ' ' + last) {
+      ret.push(this.values[i])
+    }    
+  }
+  return ret
+}
+```
+
+二、
+
+addMethod 第二次执行 ②
+old 被赋值为对象的方法 old = ninja.find，其中 old 中 fn 函数为 ① 中的回调函数即：
+
+```js
+function (first, last) {
+  var ret = []
+  for (let i = 0; i < this.values.length; i++) {
+    if (this.values[i] == first + ' ' + last) {
+      ret.push(this.values[i])
+    }    
+  }
+  return ret
+}
+```
+
+同时执行定义对象方法 ninja.find = XX，其中fn 为 ② 的函数，即：
+
+```js
+function () {
+  return this.values
+}
+```
+
+三、
+
+addMethod 第三次执行 ③
+old 被赋值为对象的方法 old = ninja.find，其中 old 中 fn 函数为 ② 中的回调函数即：
+
+```js
+function () {
+  return this.values
+}
+```
+
+同时执行定义对象方法 ninja.find == XX，其中 fn 为 ③ 中的函数，即：
+
+```js
+function (name) {
+  var ret = []
+  for (var i = 0; i < this.values.length; i++) {
+    if (this.values[i].indexOf(name) == 0) {
+      ret.push(this.values[i])
+    }
+  }
+  return ret
+}
+```
+
+这个过程中，因为是闭包，old 全部进行了保存，只是两两对应，即 old 有对应的与之关联的 old。
+
+①、②、③ 执行完之后，fn 即为 ③ 的回调函数，即
+
+```js
+function (name) {
+  var ret = []
+  for (var i = 0; i < this.values.length; i++) {
+    if (this.values[i].indexOf(name) == 0) {
+      ret.push(this.values[i])
+    }
+  }
+  return ret
+}
+```
+
+`ninja.find('Dean', 'Edwards')` 执行时，`fn.length` 为 1，`arguments.length` 传入的参数长度为 2，执行 else，执行 old，old 为闭包保存过程中的 ②，依然判断参数，执行 else，执行 old，此 old 为闭包保存过程中的 ①。
+
+当传 2 个参数的时候，当前 fn 接收 1 个参数，执行 old，此时对应的 old 接收 0 个参数，继续执行 old，此 old 接收 2 个参数，OK，执行。
+
+也就是说，每一次执行了闭包，闭包就保存了当前的变量（old、fn），每一个方法都保存了自己对应的 old 方法。③ 的 old 是 ②，② 的 old 是 ①。
 
