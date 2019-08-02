@@ -232,7 +232,7 @@ try {
 
 ```js
 var ninja = {
-  chirp: signal (n) {
+  chirp: function signal (n) {
    return n - 1 ? this.sigual(n-1) + '-chirp' : 'chirp' 
   }
 }
@@ -243,7 +243,104 @@ ninja = {}
 
 ```
 
+callee 屬性：
+
+argurments 有一个 callee 属性，callee 引用的是当前所执行的函数。该属性可以作为一个可靠的方法引用函数自身。
+
+```js
+var ninja = {
+  chirp: function (n) {
+    return n - 1 ? arguments.callee(n - 1) + '-chirp' : 'chirp'
+  }
+}
+console.log(ninja.chirp(3)) // chirp-chirp-chirp
+```
+
+## 函数的属性
+
+向集合中添加函数，如果函数已经存在，就不需要再添加。给函数添加一个属性进行判断：
+
+```js
+var store = {
+  nextId: 1,
+  cache: {},
+  add: function (fn) {
+    if (!fn.id) {
+      fn.id = store.nextId++;
+      store.cache[fn.id] = fn
+    }
+  }
+}
+function ninja1() { }
+function ninja2() { }
+store.add(ninja1)
+console.log(store)
+store.add(ninja1)
+console.log(store)
+store.add(ninja2)
+console.log(store)
+```
+
+### memoization
+
+一个计算素数的简单算法：
+
+```js
+function isPrime(value) {
+  if (!isPrime.answers) isPrime.answers = []
+  if (isPrime.answers[value] != null) {    
+    return isPrime.answers[value];
+  }
+  var prime = value != 1
+  for (var i = 2; i < value; i++) {
+    if (value % i == 0) {
+      prime = false
+      break
+    }
+  }
+  return isPrime.answers[value] = prime
+}
+isPrime(5)
+console.log(isPrime.answers) // (6)[empty × 5, true]
+isPrime(4)
+isPrime(5)
+isPrime(6)
+console.log(isPrime.answers) // (7)[empty × 4, false, true, false]
+```
+
+### 对象模拟数组
+
+```js
+var elems = {
+  length: 0,
+  add: function (elem) {
+    Array.prototype.push.call(this, elem)
+  },
+  gether: function (id) {
+    this.add(document.getElementById(id))
+  }
+}
+elems.gether('first')
+console.log(elems) // { 0: null, length: 1, add: ƒ, gether: ƒ }
+elems.gether('second')
+console.log(elems) // {0: null, 1: null, length: 2, add: ƒ, gether: ƒ}
+```
+
+
 ## 函数重载
+
+由于 JavaScript 没有函数重载（一种我们可能已经习惯的面向对象语言的功能），参数列表的灵活性是获得其他语言类似重载功能的关键所在。
+
+### 使用 apply() 支持可变参数
+
+```js
+function larget (arr) {
+  return Math.max.apply(Math, arr)
+}
+console.log(larget([0,5,3])) // 5
+```
+
+### 函数重载
 
 面向对象语言里，方法重载通常是通过在同名方法（但不同参数）里声明不同的实现来达到目的。但在 JavaScript 中，通过传入参数的特性和个数进行相应修改来达到目的。
 
@@ -268,9 +365,62 @@ var merged = merge(
     city: 'Niihama'
   }
 )
+console.log(merged) // {name: "Batou", city: "Niihama"}
 ```
 
 root 是第一个参数，作为返回，arguments 可以获取其他参数，但是从第二个开始。
+
+### 函数的 length 属性
+
+- 通过函数的 length 属性，可以知道声明了多少个命名参数。
+- 通过函数的 arguments.length，可以知道在调用是传入了多少个参数。
+
+### 利用参数的个数进行函数重载
+
+假设在一个对象上有一个方法，根据传入参数的个数来执行不同的操作。
+
+```js
+function addMethod (object, name, fn) {
+  var old = object[name]
+  object[name] = function () {
+    if (fn.length == arguments.length) {
+      return fn.apply(this, arguments)
+    } else if (typeof old == 'function') {
+      return old.apply(this, arguments)
+    }
+  }  
+}
+var ninja = {
+  values: ['Dean Edwards', 'Sam Stephenson', 'Alex Russell']
+}
+addMethod(ninja, 'find', function () {  
+  return this.values
+})
+addMethod(ninja, 'find', function (name) {
+  var ret = []
+  for (var i = 0; i < this.values.length; i++) {
+    if (this.values[i].indexOf(name) == 0) {
+      ret.push(this.values[i])
+    }    
+  }
+  return ret
+})
+addMethod(ninja, 'find', function (first, last) {
+  var ret = []
+  for (let i = 0; i < this.values.length; i++) {
+    if (this.values[i] == first + ' ' + last) {
+      ret.push(this.values[i])
+    }    
+  }
+  return ret
+})
+console.log(ninja.find()) // ["Dean Edwards", "Sam Stephenson", "Alex Russell"]
+console.log(ninja.find('Sam')) // ["Sam Stephenson"]
+console.log(ninja.find('Dean', 'Edwards')) // ["Dean Edwards"]
+console.log(ninja.find('Alex', 'Russell', 'Jr')) // undefined
+```
+
+
 
 
 
