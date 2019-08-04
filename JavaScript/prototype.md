@@ -6,6 +6,13 @@
 
 **使用 new 操作符將函數作為構造器進行調用的時候，其上下文被定義為新對象的實例。**
 
+`new` 關鍵字的過程：
+
+1. 聲明一個中間對象；
+2. 將該中間對象的原型指向構造函數的原型；
+3. 將構造函數的 this 指向該中間對象；
+4. 返回該中間對象，即返回實例對象。
+
 在構造器函數內部定義了一個方法，同時在構造器的 `prototype` 屬性上添加了一個同名方法，創建構造器的實例，會執行哪一個方法？
 
 ```js
@@ -178,4 +185,40 @@ console.log(new Test()) // Test {}
 - “普通”函數的上下文是全局作用域
 - 利用 `instanceof` 操作符測試已構建對象是否構建于指定的構造器
 
+
+## 繼承
+
+```js
+function Person(name, age) {
+  this.name = name;
+  this.age = age;
+}
+Person.prototype.getName = function () {
+  return this.name
+}
+Person.prototype.getAge = function () {
+  return this.age;
+}
+function Student(name, age, grade) {
+  // 构造函数继承
+  Person.call(this, name, age);
+  this.grade = grade;
+}
+// 原型继承
+Student.prototype = Object.create(Person.prototype, {
+  // 不要忘了重新指定构造函数
+  constructor: {
+    value: Student
+  },
+  getGrade: {
+    value: function () {
+      return this.grade
+    }
+  }
+})
+var s1 = new Student('ming', 22, 5);
+console.log(s1.getName()); // ming
+console.log(s1.getAge()); // 22
+console.log(s1.getGrade()); // 5
+```
 
