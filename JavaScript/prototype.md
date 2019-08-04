@@ -190,19 +190,19 @@ console.log(new Test()) // Test {}
 
 ```js
 function Person(name, age) {
-  this.name = name;
-  this.age = age;
+  this.name = name
+  this.age = age
 }
 Person.prototype.getName = function () {
   return this.name
 }
 Person.prototype.getAge = function () {
-  return this.age;
+  return this.age
 }
 function Student(name, age, grade) {
   // 构造函数继承
-  Person.call(this, name, age);
-  this.grade = grade;
+  Person.call(this, name, age)
+  this.grade = grade
 }
 // 原型继承
 Student.prototype = Object.create(Person.prototype, {
@@ -216,9 +216,126 @@ Student.prototype = Object.create(Person.prototype, {
     }
   }
 })
-var s1 = new Student('ming', 22, 5);
-console.log(s1.getName()); // ming
-console.log(s1.getAge()); // 22
-console.log(s1.getGrade()); // 5
+var s1 = new Student('ming', 22, 5)
+console.log(s1.getName()) // ming
+console.log(s1.getAge()) // 22
+console.log(s1.getGrade()) // 5
+```
+
+流傳的幾種繼承方式，其實都沒有真正實現繼承：
+
+### 構造函數繼承：`Parent.call(this)`
+
+```js
+function Parent1() {
+  this.name = 'parent1'
+}
+Parent1.prototype.say = function() {}
+function Child1() {
+  Parent1.call(this)
+  this.type = 'child'
+}
+console.log(new Child1())
+```
+
+這種智能繼承父類的實例屬性和方法，不能繼承原型屬性和方法。
+
+### 原型鏈繼承：`Child.prototype = new Parent()`
+
+```js
+function Parent2() {
+  this.name = 'parent2'
+  this.play = [1, 2, 3]
+}
+function Child2() {
+  this.type = 'child2'
+}
+Child2.prototype = new Parent2()
+console.log(new Child2())
+var s1 = new Child2()
+var s2 = new Child2()
+console.log(s1.play) // (3) [1, 2, 3]
+console.log(s2.play) // (3) [1, 2, 3]
+s1.play.push(4)
+console.log(s1.play) // (4) [1, 2, 3, 4]
+console.log(s2.play) // (4) [1, 2, 3, 4]
+```
+
+子類實例都共享父類實例的屬性，一個實例修改屬性會影響另一個實例。
+
+### 組合繼承：結合構造函數繼承和原型繼承
+
+```js
+function Parent3() {
+  this.name = 'parent3'
+  this.play = [1, 2, 3]
+}
+Parent3.prototype.say = function () { }
+function Child3() {
+  Parent3.call(this)
+  this.type = 'child3'
+}
+Child3.prototype = new Parent3()
+var s3 = new Child3()
+var s4 = new Child3()
+console.log(s3.play) // (3) [1, 2, 3]
+console.log(s4.play) // (3) [1, 2, 3]
+s3.play.push(4)
+console.log(s3.play) // (4) [1, 2, 3, 4]
+console.log(s4.play) // (3) [1, 2, 3]
+```
+
+真正實現繼承，構造函數中的屬性通過 call 每次賦值，原型中的屬性繼承自父類原型。缺點是實例一個對象是，父類 new 了兩次。
+
+### 組合繼承優化（1）
+
+```js
+function Parent4() {
+  this.name = 'parent4'
+  this.play = [1, 2, 3]
+}
+Parent4.prototype.say = function () { }
+function Child4() {
+  Parent4.call(this)
+  this.type = 'child4'
+}
+Child4.prototype = Parent4.prototype
+var s5 = new Child4()
+var s6 = new Child4()
+console.log(s5 instanceof Child4) // true
+console.log(s5 instanceof Parent4) // true
+console.log(s5.constructor) // ƒ Parent4() { }
+```
+
+通過 call 就可以獲得構造函數中所有屬性，所以原型直接賦值就好。但是無法確定對象有什麼構造函數實例化，constructor 判斷可知，子類的構造器還是父類。這是因為 constructor 在 prototype 中，指向構造器。這裡直接賦值產生問題。
+
+### 組合繼承優化（2）
+
+```js
+function Parent5() {
+  this.name = 'parent5'
+  this.play = [1, 2, 3]
+}
+Parent5.prototype.say = function () { }
+function Child5() {
+  Parent5.call(this)
+  this.type = 'child5'
+}
+Child5.prototype = Object.create(Parent5.prototype)
+Child5.prototype.constructor = Child5
+var s5 = new Child5()
+console.log(s5 instanceof Child5); // true
+console.log(s5 instanceof Parent5); // true
+console.log(s5.constructor); // ƒ Parent5() { }
+```
+
+這裡使用 `Object.create()`，它的作用是將對象繼承到 proto 屬性上，舉個例子：
+
+```js
+var test = Object.create({ x: 123, y: 345 });
+console.log(test); // {}
+console.log(test.x); // 123
+console.log(test.__proto__.x); // 123
+console.log(test.__proto__.x === test.x); // true
 ```
 
