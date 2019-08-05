@@ -329,7 +329,7 @@ console.log(s5 instanceof Parent5); // true
 console.log(s5.constructor); // ƒ Parent5() { }
 ```
 
-這裡使用 `Object.create()`，它的作用是將對象繼承到 proto 屬性上，舉個例子：
+`Object.create()` 方法創建一個新對象，使用現有的對象作為新創建對象的 prototype。 這裡使用 `Object.create()`，它的作用是將對象繼承到 proto 屬性上，舉個例子：
 
 ```js
 var test = Object.create({ x: 123, y: 345 });
