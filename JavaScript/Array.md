@@ -153,6 +153,26 @@ if (!Array.of) {
 }
 ```
 
+## Array.slice()
+
+方法返回一个新的数组对象，这一对象是一个由 begin 和 end 决定的原数组的浅拷贝（包括 begin，不包括end）。原始数组不会被改变。
+
+```js
+var fruits = ['Banana', 'Orange', 'Lemon', 'Apple', 'Mango'];
+var citrus = fruits.slice(1, 3);
+// fruits contains ['Banana', 'Orange', 'Lemon', 'Apple', 'Mango']
+// citrus contains ['Orange','Lemon']
+```
+
+slice 方法可以用来将一个类数组（Array-like）对象/集合转换成一个新数组。
+
+```js
+function list() {
+  return Array.prototype.slice.call(arguments);
+}
+var list1 = list(1, 2, 3); // [1, 2, 3]
+```
+
 ## 參考
 
 - [Array](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Array)
