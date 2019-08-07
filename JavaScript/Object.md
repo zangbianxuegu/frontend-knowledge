@@ -1,4 +1,4 @@
-# 对象
+# 對象
 
 ## Object.create()
 
@@ -12,3 +12,8 @@ clear() {
   this.size = 0
 }
 ```
+
+## 類型判斷
+
+### typeof
+
