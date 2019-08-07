@@ -1,5 +1,7 @@
 # 數據類型和數據結構
 
+**轉自**：https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Data_structures
+
 ## 基本類型（primitive values，原始值）
 
 基本類型（基本數值、基本數據類型）是一種既非對象也無方法的數據。在 JavaScript 中，共有 7 種基本類型：string，number，bigint，boolean，null，undefined，symbol (ECMAScript 2016 新增)。
@@ -176,7 +178,7 @@ JavaScript 有一個內置對象的標準庫。
 
 #### 標準內置對象的分類
 
-https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects
+**转自**：https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects
 
 ##### 值屬性
 
