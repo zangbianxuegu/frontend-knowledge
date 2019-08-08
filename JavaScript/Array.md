@@ -53,7 +53,7 @@ Array.isArray({[object Object]: Array.prototype});
 ```js
 if (!Array.isArray) {
   Array.isArray = function(arg) {
-    return Object.prototype.function function toString() { [native code] }() { [native code] }.call(arg) === '[object Array]';
+    return Object.prototype.function function function toString() { [native code] }() { [native code] }() { [native code] }.call(arg) === '[object Array]';
   };
 }
 ```
@@ -97,7 +97,7 @@ if (!Array.of) {
 
 ### 屬性
 
-#### Array.prototype.constructor
+#### Array.prototype.function Object() { [native code] }
 
 所有的數組實例都繼承了這個屬性，它的值就是 Array，表明了所有的數組都是由 Array 構造出來的。
 
@@ -116,10 +116,10 @@ let myFish = ["angel", "clown", "mandarin", "surgeon"];
 
 let popped = myFish.pop();
 
-console.log(myFish); 
+console.log(myFish);
 // ["angel", "clown", "mandarin"]
 
-console.log(popped); 
+console.log(popped);
 // surgeon
 ```
 
@@ -127,28 +127,28 @@ console.log(popped);
 
 在數組的末尾增加一個或多個元素，並返回數組的新長度。
 
-合并两个数组：使用 apply() 添加第二个数组的所有元素。
+合併兩個數組：使用 apply() 添加第二個數組的所有元素。
 
 ```js
 var vegetables = ['parsnip', 'potato'];
 var moreVegs = ['celery', 'beetroot'];
 
-// 将第二个数组融合进第一个数组
-// 相当于 vegetables.push('celery', 'beetroot');
+// 將第二個數組融合進第一個數組
+// 相當於 vegetables.push('celery', 'beetroot');
 Array.prototype.push.apply(vegetables, moreVegs);
 
-console.log(vegetables); 
+console.log(vegetables);
 // ['parsnip', 'potato', 'celery', 'beetroot']
 ```
 
-像数组一样使用对象：
+像數組一樣使用對象：
 
 ```js
 var obj = {
     length: 0,
 
     addElem: function addElem (elem) {
-        // obj.length is automatically incremented 
+        // obj.length is automatically incremented
         // every time an element is added.
         [].push.call(this, elem);
     }
@@ -182,33 +182,33 @@ console.log(obj.length);
 
 在任意的位置給數組添加或刪除任意個元素。
 
-语法：`array.splice(start[, deleteCount[, item1[, item2[, ...]]]])`
+語法：`array.splice(start[, deleteCount[, item1[, item2[, ...]]]])`
 
 #### start​
 
-指定修改的开始位置（从0计数）。如果超出了数组的长度，则从数组末尾开始添加内容；如果是负值，则表示从数组末位开始的第几位（从-1计数，这意味着-n是倒数第n个元素并且等价于array.length-n）；如果负数的绝对值大于数组的长度，则表示开始位置为第0位。
+指定修改的開始位置（從 0 計數）。如果超出了數組的長度，則從數組末尾開始添加內容；如果是負值，則表示從數組末位開始的第幾位（從 - 1 計數，這意味著 - n 是倒數第 n 個元素並且等價於 array.length-n）；如果負數的絕對值大於數組的長度，則表示開始位置為第 0 位。
 
-#### deleteCount 可选
+#### deleteCount 可選
 
-整数，表示要移除的数组元素的个数。
-如果 deleteCount 大于 start 之后的元素的总数，则从 start 后面的元素都将被删除（含第 start 位）。
-如果 deleteCount 被省略了，或者它的值大于等于array.length - start(也就是说，如果它大于或者等于start之后的所有元素的数量)，那么start之后数组的所有元素都会被删除。
-如果 deleteCount 是 0 或者负数，则不移除元素。这种情况下，至少应添加一个新元素。
+整數，表示要移除的數組元素的個數。
+如果 deleteCount 大於 start 之後的元素的總數，則從 start 後面的元素都將被刪除（含第 start 位）。
+如果 deleteCount 被省略了，或者它的值大於等於 array.length - start(也就是說，如果它大於或者等於 start 之後的所有元素的數量)，那麼 start 之後數組的所有元素都會被刪除。
+如果 deleteCount 是 0 或者負數，則不移除元素。這種情況下，至少應添加一個新元素。
 
-#### item1, item2, ... 可选
+#### item1, item2, ... 可選
 
-要添加进数组的元素,从start 位置开始。如果不指定，则 splice() 将只删除数组元素。
+要添加進數組的元素, 從 start 位置開始。如果不指定，則 splice() 將只刪除數組元素。
 
 例子：
 
-从第 0 位开始删除 2 个元素，插入"parrot"、"anemone"和"blue"
+從第 0 位開始刪除 2 個元素，插入 "parrot"、"anemone" 和 "blue"
 
 ```js
 var myFish = ['angel', 'clown', 'trumpet', 'sturgeon'];
 var removed = myFish.splice(0, 2, 'parrot', 'anemone', 'blue');
 
-// 运算后的 myFish: ["parrot", "anemone", "blue", "trumpet", "sturgeon"]
-// 被删除的元素: ["angel", "clown"]
+// 運算後的 myFish: ["parrot", "anemone", "blue", "trumpet", "sturgeon"]
+// 被刪除的元素: ["angel", "clown"]
 ```
 
 ## 不會改變自身的方法
@@ -247,13 +247,13 @@ function list() {
 var list1 = list(1, 2, 3); // [1, 2, 3]
 ```
 
-### Array.prototype.function function toString() { [native code] }() { [native code] }()
+### Array.prototype.function function function toString() { [native code] }() { [native code] }() { [native code] }()
 
-返回一個由所有數組元素組合而成的字符串。遮蔽了原型鏈上的 Object.prototype.function function toString() { [native code] }() { [native code] }() 方法。
+返回一個由所有數組元素組合而成的字符串。遮蔽了原型鏈上的 Object.prototype.function function function toString() { [native code] }() { [native code] }() { [native code] }() 方法。
 
-### Array.prototype.function function toLocaleString() { [native code] }() { [native code] }()
+### Array.prototype.function function function toLocaleString() { [native code] }() { [native code] }() { [native code] }()
 
-返回一個由所有數組元素組合而成的本地化後的字符串。遮蔽了原型鏈上的 Object.prototype.function function toLocaleString() { [native code] }() { [native code] }() 方法。
+返回一個由所有數組元素組合而成的本地化後的字符串。遮蔽了原型鏈上的 Object.prototype.function function function toLocaleString() { [native code] }() { [native code] }() { [native code] }() 方法。
 
 ### Array.prototype.indexOf()
 
