@@ -247,11 +247,11 @@ function list() {
 var list1 = list(1, 2, 3); // [1, 2, 3]
 ```
 
-### Array.prototype.function function function toString() { [native code] }() { [native code] }() { [native code] }()
+### Array.prototype.toString()
 
 返回一個由所有數組元素組合而成的字符串。遮蔽了原型鏈上的 Object.prototype.function function function toString() { [native code] }() { [native code] }() { [native code] }() 方法。
 
-### Array.prototype.function function function toLocaleString() { [native code] }() { [native code] }() { [native code] }()
+### Array.prototype.toLocaleString()
 
 返回一個由所有數組元素組合而成的本地化後的字符串。遮蔽了原型鏈上的 Object.prototype.function function function toLocaleString() { [native code] }() { [native code] }() { [native code] }() 方法。
 
