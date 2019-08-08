@@ -20,7 +20,7 @@ var shallowCopy = fruits.slice(); // this is how to make a copy
 
 ## 方法
 
-## Array.isArray()
+### Array.isArray()
 
 確定傳遞的值是否是一個 Array。
 
@@ -44,11 +44,11 @@ Array.isArray(false);
 Array.isArray({[object Object]: Array.prototype});
 ```
 
-### `Array.isArray` 和 `instanceof`
+#### `Array.isArray` 和 `instanceof`
 
 當檢測 Array 實例時，`Array.isArray` 優於 `instanceof`，因為 `Array.isArray` 能檢測 iframes。
 
-### Polyfill
+#### Polyfill
 
 ```js
 if (!Array.isArray) {
@@ -58,7 +58,7 @@ if (!Array.isArray) {
 }
 ```
 
-## Array.from()
+### Array.from()
 
 從一個類似數組或可迭代對象中創建一個新的，淺拷貝的數組實例。
 
@@ -73,7 +73,7 @@ console.log(Array.from([1, 2, 3], x => x + x));
 // expected output: Array [2, 4, 6]
 ```
 
-## Array.of()
+### Array.of()
 
 創建一個具有可變數量參數的新數組實例，而不考慮參數的數量或類型。
 
@@ -83,7 +83,7 @@ Array.of(1, 2, 3);   // [1, 2, 3]
 Array.of(undefined); // [undefined]
 ```
 
-### Polyfill
+#### Polyfill
 
 ```js
 if (!Array.of) {
@@ -97,7 +97,7 @@ if (!Array.of) {
 
 ### 屬性
 
-#### Array.prototype.function Object() { [native code] }
+#### Array.prototype.constructor
 
 所有的數組實例都繼承了這個屬性，它的值就是 Array，表明了所有的數組都是由 Array 構造出來的。
 
@@ -111,17 +111,68 @@ if (!Array.of) {
 
 刪除數組的最後一個元素，並返回這個元素。
 
+```js
+let myFish = ["angel", "clown", "mandarin", "surgeon"];
+
+let popped = myFish.pop();
+
+console.log(myFish); 
+// ["angel", "clown", "mandarin"]
+
+console.log(popped); 
+// surgeon
+```
+
 ### Array.prototype.push()
 
 在數組的末尾增加一個或多個元素，並返回數組的新長度。
+
+合并两个数组：使用 apply() 添加第二个数组的所有元素。
+
+```js
+var vegetables = ['parsnip', 'potato'];
+var moreVegs = ['celery', 'beetroot'];
+
+// 将第二个数组融合进第一个数组
+// 相当于 vegetables.push('celery', 'beetroot');
+Array.prototype.push.apply(vegetables, moreVegs);
+
+console.log(vegetables); 
+// ['parsnip', 'potato', 'celery', 'beetroot']
+```
+
+像数组一样使用对象：
+
+```js
+var obj = {
+    length: 0,
+
+    addElem: function addElem (elem) {
+        // obj.length is automatically incremented 
+        // every time an element is added.
+        [].push.call(this, elem);
+    }
+};
+
+// Let's add some empty objects just to illustrate.
+obj.addElem({});
+obj.addElem({});
+console.log(obj.length);
+// → 2
+```
 
 ### Array.prototype.reverse()
 
 顛倒數組中元素的排列順序，即原先的第一個變為最後一個，原先的最後一個變為第一個。
 
+
 ### Array.prototype.shift()
 
 刪除數組的第一個元素，並返回這個元素。
+
+### Array.prototype.unshift()
+
+在數組的開頭增加一個或多個元素，並返回數組的新長度。
 
 ### Array.prototype.sort()
 
@@ -131,9 +182,34 @@ if (!Array.of) {
 
 在任意的位置給數組添加或刪除任意個元素。
 
-### Array.prototype.unshift()
+语法：`array.splice(start[, deleteCount[, item1[, item2[, ...]]]])`
 
-在數組的開頭增加一個或多個元素，並返回數組的新長度。
+#### start​
+
+指定修改的开始位置（从0计数）。如果超出了数组的长度，则从数组末尾开始添加内容；如果是负值，则表示从数组末位开始的第几位（从-1计数，这意味着-n是倒数第n个元素并且等价于array.length-n）；如果负数的绝对值大于数组的长度，则表示开始位置为第0位。
+
+#### deleteCount 可选
+
+整数，表示要移除的数组元素的个数。
+如果 deleteCount 大于 start 之后的元素的总数，则从 start 后面的元素都将被删除（含第 start 位）。
+如果 deleteCount 被省略了，或者它的值大于等于array.length - start(也就是说，如果它大于或者等于start之后的所有元素的数量)，那么start之后数组的所有元素都会被删除。
+如果 deleteCount 是 0 或者负数，则不移除元素。这种情况下，至少应添加一个新元素。
+
+#### item1, item2, ... 可选
+
+要添加进数组的元素,从start 位置开始。如果不指定，则 splice() 将只删除数组元素。
+
+例子：
+
+从第 0 位开始删除 2 个元素，插入"parrot"、"anemone"和"blue"
+
+```js
+var myFish = ['angel', 'clown', 'trumpet', 'sturgeon'];
+var removed = myFish.splice(0, 2, 'parrot', 'anemone', 'blue');
+
+// 运算后的 myFish: ["parrot", "anemone", "blue", "trumpet", "sturgeon"]
+// 被删除的元素: ["angel", "clown"]
+```
 
 ## 不會改變自身的方法
 
