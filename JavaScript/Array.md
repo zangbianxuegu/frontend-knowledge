@@ -53,7 +53,7 @@ Array.isArray({[object Object]: Array.prototype});
 ```js
 if (!Array.isArray) {
   Array.isArray = function(arg) {
-    return Object.prototype.function function function toString() { [native code] }() { [native code] }() { [native code] }.call(arg) === '[object Array]';
+    return Object.prototype.function function function function function function toString() { [native code] }() { [native code] }() { [native code] }() { [native code] }() { [native code] }() { [native code] }.call(arg) === '[object Array]';
   };
 }
 ```
@@ -165,6 +165,13 @@ console.log(obj.length);
 
 顛倒數組中元素的排列順序，即原先的第一個變為最後一個，原先的最後一個變為第一個。
 
+```js
+var sourceArray = ['one', 'two', 'three'];
+var reverseArray = sourceArray.reverse();
+
+console.log(sourceArray) // ['three', 'two', 'one']
+console.log(sourceArray === reverseArray); // true
+```
 
 ### Array.prototype.shift()
 
@@ -174,9 +181,34 @@ console.log(obj.length);
 
 在數組的開頭增加一個或多個元素，並返回數組的新長度。
 
+unshift 特意被設計成具有通用性；這個方法能夠通過 call 或 apply 方法作用於類數組對象上。
+
+```js
+let arr = [4,5,6];
+arr.unshift(1,2,3);
+console.log(arr); // [1, 2, 3, 4, 5, 6]
+
+arr = [4,5,6]; // 重置數組
+arr.unshift(1);
+arr.unshift(2);
+arr.unshift(3);
+console.log(arr); // [3, 2, 1, 4, 5, 6]
+```
+
 ### Array.prototype.sort()
 
 對數組元素進行排序，並返回當前數組。
+
+格式：`arr.sort([compareFunction])`
+
+如果沒有指明 compareFunction，那麼元素會按照轉換為的字符串的諸個字符的 Unicode 位點進行排序。例如 "Banana" 會被排列到 "cherry" 之前。當數字按由小到大排序時，9 出現在 80 之前，但因為（沒有指明 compareFunction），比較的數字會先被轉換為字符串，所以在 Unicode 順序上 "80" 要比 "9" 要靠前。
+
+如果指明瞭 compareFunction ，那麼數組會按照調用該函數的返回值排序。即 a 和 b 是兩個將要被比較的元素：
+
+- 如果 compareFunction(a, b) 小於 0 ，那麼 a 會被排列到 b 之前；
+- 如果 compareFunction(a, b) 等於 0 ， a 和 b 的相對位置不變。備註： ECMAScript 標準並不保證這一行為，而且也不是所有瀏覽器都會遵守（例如 Mozilla 在 2003 年之前的版本）；
+- 如果 compareFunction(a, b) 大於 0 ， b 會被排列到 a 之前。
+- compareFunction(a, b) 必須總是對相同的輸入返回相同的比較結果，否則排序的結果將是不確定的。
 
 ### Array.prototype.splice()
 
@@ -191,7 +223,9 @@ console.log(obj.length);
 #### deleteCount 可選
 
 整數，表示要移除的數組元素的個數。
+
 如果 deleteCount 大於 start 之後的元素的總數，則從 start 後面的元素都將被刪除（含第 start 位）。
+
 如果 deleteCount 被省略了，或者它的值大於等於 array.length - start(也就是說，如果它大於或者等於 start 之後的所有元素的數量)，那麼 start 之後數組的所有元素都會被刪除。
 如果 deleteCount 是 0 或者負數，則不移除元素。這種情況下，至少應添加一個新元素。
 
@@ -221,9 +255,22 @@ var removed = myFish.splice(0, 2, 'parrot', 'anemone', 'blue');
 
 判斷當前數組是否包含某指定的值，如果是返回 true，否則返回 false。
 
+```js
+(function() {
+  console.log([].includes.call(arguments, 'a')); // true
+  console.log([].includes.call(arguments, 'd')); // false
+})('a','b','c');
+```
+
 ### Array.prototype.join()
 
 連接所有數組元素組成一個字符串。
+
+語法：`arr.join([separator])`
+
+#### separator
+
+指定一個字符串來分隔數組的每個元素。默認為 ","。如果 separator 是空字符串 ("")，則所有元素之間都沒有任何字符。
 
 ### Array.prototype.slice()
 
@@ -249,11 +296,11 @@ var list1 = list(1, 2, 3); // [1, 2, 3]
 
 ### Array.prototype.toString()
 
-返回一個由所有數組元素組合而成的字符串。遮蔽了原型鏈上的 Object.prototype.function function function toString() { [native code] }() { [native code] }() { [native code] }() 方法。
+返回一個由所有數組元素組合而成的字符串。遮蔽了原型鏈上的 Array.prototype.toString() 方法。
 
 ### Array.prototype.toLocaleString()
 
-返回一個由所有數組元素組合而成的本地化後的字符串。遮蔽了原型鏈上的 Object.prototype.function function function toLocaleString() { [native code] }() { [native code] }() { [native code] }() 方法。
+返回一個由所有數組元素組合而成的本地化後的字符串。遮蔽了原型鏈上的 Array.prototype.toLocaleString() 方法。
 
 ### Array.prototype.indexOf()
 
