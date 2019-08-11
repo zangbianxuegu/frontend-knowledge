@@ -109,7 +109,7 @@ if (!Array.of) {
 
 ### `Array.prototype.pop()`
 
-**刪除數組的最後一個元素，並返回這個元素。**
+刪除數組的最後一個元素，並返回這個元素。
 
 ```js
 let myFish = ["angel", "clown", "mandarin", "surgeon"];
@@ -447,7 +447,7 @@ callback 在被调用时可传入三个参数：元素值，元素的索引，�
 [12, 54, 18, 130, 44].every(x => x >= 10); // true
 ```
 
-### `Array.prototype.some()
+### `Array.prototype.some()`
 
 如果數組中至少有一個元素滿足測試函數，則返回 true，否則返回 false。
 
