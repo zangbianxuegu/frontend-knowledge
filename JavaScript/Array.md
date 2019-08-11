@@ -22,7 +22,7 @@ var shallowCopy = fruits.slice(); // this is how to make a copy
 
 ### `Array.isArray()`
 
-**確定傳遞的值是否是一個 Array。**
+確定傳遞的值是否是一個 Array。
 
 ```js
 // 下面的函數調用都返回 true
@@ -75,7 +75,7 @@ console.log(Array.from([1, 2, 3], x => x + x));
 
 ### `Array.of()`
 
-**創建一個具有可變數量參數的新數組實例，而不考慮參數的數量或類型。**
+創建一個具有可變數量參數的新數組實例，而不考慮參數的數量或類型。
 
 ```js
 Array.of(1);         // [1]
@@ -141,7 +141,7 @@ console.log(vegetables);
 // ['parsnip', 'potato', 'celery', 'beetroot']
 ```
 
-**像數組一樣使用對象：**
+像數組一樣使用對象：
 
 ```js
 var obj = {
@@ -163,7 +163,7 @@ console.log(obj.length);
 
 ### `Array.prototype.reverse()`
 
-**顛倒數組中元素的排列順序，即原先的第一個變為最後一個，原先的最後一個變為第一個。**
+顛倒數組中元素的排列順序，即原先的第一個變為最後一個，原先的最後一個變為第一個。
 
 ```js
 var sourceArray = ['one', 'two', 'three'];
@@ -216,27 +216,13 @@ console.log(arr); // [3, 2, 1, 4, 5, 6]
 
 #### 語法：`array.splice(start[, deleteCount[, item1[, item2[, ...]]]])`
 
-- start​
-
-指定修改的開始位置（從 0 計數）。如果超出了數組的長度，則從數組末尾開始添加內容；如果是負值，則表示從數組末位開始的第幾位（從 - 1 計數，這意味著 - n 是倒數第 n 個元素並且等價於 array.length-n）；如果負數的絕對值大於數組的長度，則表示開始位置為第 0 位。
-
-  - `deleteCount` 可選
-
-  整數，表示要移除的數組元素的個數。
-
-  如果 deleteCount 大於 start 之後的元素的總數，則從 start 後面的元素都將被刪除（含第 start 位）。
-
-  如果 deleteCount 被省略了，或者它的值大於等於 array.length - start(也就是說，如果它大於或者等於 start 之後的所有元素的數量)，那麼 start 之後數組的所有元素都會被刪除。
-  
-  如果 deleteCount 是 0 或者負數，則不移除元素。這種情況下，至少應添加一個新元素。
-
-  - item1, item2, ... 可選
-
-  要添加進數組的元素, 從 start 位置開始。如果不指定，則 splice() 將只刪除數組元素。
+- start​：指定修改的開始位置（從 0 計數）。如果超出了數組的長度，則從數組末尾開始添加內容；如果是負值，則表示從數組末位開始的第幾位（從 - 1 計數，這意味著 - n 是倒數第 n 個元素並且等價於 array.length-n）；如果負數的絕對值大於數組的長度，則表示開始位置為第 0 位。
+  - `deleteCount` 可選：整數，表示要移除的數組元素的個數。如果 deleteCount 大於 start 之後的元素的總數，則從 start 後面的元素都將被刪除（含第 start 位）。如果 deleteCount 被省略了，或者它的值大於等於 array.length - start(也就是說，如果它大於或者等於 start 之後的所有元素的數量)，那麼 start 之後數組的所有元素都會被刪除。如果 deleteCount 是 0 或者負數，則不移除元素。這種情況下，至少應添加一個新元素。
+  - item1, item2, ... 可選：要添加進數組的元素, 從 start 位置開始。如果不指定，則 splice() 將只刪除數組元素。
 
 #### 例子：
 
-**從第 0 位開始刪除 2 個元素，插入 "parrot"、"anemone" 和 "blue"**
+從第 0 位開始刪除 2 個元素，插入 "parrot"、"anemone" 和 "blue"
 
 ```js
 var myFish = ['angel', 'clown', 'trumpet', 'sturgeon'];
@@ -321,7 +307,7 @@ prices.toLocaleString('ja-JP', { style: 'currency', currency: 'JPY' });
 
 #### 例子：
 
-**找出指定元素出现的所有位置**
+找出指定元素出现的所有位置
 
 ```js
 var indices = [];
@@ -350,25 +336,11 @@ console.log(indices);
 
 #### 语法：`arr.forEach(callback[, thisArg])`
 
-- `callback`
-
-为数组中每个元素执行的函数，该函数接收三个参数：
-  
-  - `currentValue`
-  
-  数组中正在处理的当前元素。
-  
-  - `index` 可选
-  
-  数组中正在处理的当前元素的索引。
-  
-  - `array` 可选
-  
-  `forEach()` 方法正在操作的数组。
-
-- `thisArg` 可选
-
-可选参数。当执行回调函数时用作 this 的值(参考对象)。
+- `callback`：为数组中每个元素执行的函数，该函数接收三个参数：
+  - `currentValue`：数组中正在处理的当前元素。
+  - `index` 可选：数组中正在处理的当前元素的索引。
+  - `array` 可选：`forEach()` 方法正在操作的数组。
+- `thisArg` 可选：可选参数。当执行回调函数时用作 this 的值(参考对象)。
 
 #### 描述
 
@@ -378,7 +350,7 @@ forEach() 为每个数组元素执行 callback 函数；不像 map() 或者 redu
 
 #### 例子
 
-**for 循环改为 forEach：**
+for 循环改为 forEach：
 
 ```js
 const items = ['item1', 'item2', 'item3'];
@@ -395,7 +367,7 @@ items.forEach(function(item){
 });
 ```
 
-**使用参数**
+使用参数
 
 ```js
 function logArrayElements(element, index, array) {
@@ -409,7 +381,7 @@ function logArrayElements(element, index, array) {
 // a[3] = 9
 ```
 
-**使用 thisArg**
+使用 thisArg
 
 ```js
 function Counter() {
@@ -458,25 +430,11 @@ for (let e of iterator) {
 
 #### 语法：`arr.every(callback[, thisArg])`
 
-- callback
-
-用来测试每个元素的函数，它可以接收三个参数：
-
-  - element
-  
-  用于测试的当前值。
-  
-  - index可选
-
-  用于测试的当前值的索引。
-  
-  - array可选
-  
-  调用 every 的当前数组。
-
-- thisArg
-
-执行 callback 时使用的 this 值。
+- callback：用来测试每个元素的函数，它可以接收三个参数：
+  - element：用于测试的当前值。
+  - index可选：用于测试的当前值的索引。
+  - array可选：调用 every 的当前数组。
+- thisArg：执行 callback 时使用的 this 值。
 
 every 方法为数组中的每个元素执行一次 callback 函数，直到它找到一个会使 callback 返回 falsy 的元素。如果发现了一个这样的元素，every 方法将会立即返回 false。否则，callback 为每一个元素返回 true，every 就会返回 true。
 
@@ -588,7 +546,7 @@ var roots = numbers.map(Math.sqrt);
 
 #### 例子
 
-**數組裡所有值的和：**
+數組裡所有值的和：
 
 ```js
 var total = [0, 1, 2, 3].reduce(
@@ -597,7 +555,7 @@ var total = [0, 1, 2, 3].reduce(
 );
 ```
 
-**累加對象數組裡的值:**
+累加對象數組裡的值：
 
 ```js
 var initialValue = 0;
@@ -608,7 +566,7 @@ var sum = [{x: 1}, {x:2}, {x:3}].reduce(
 console.log(sum) // logs 6
 ```
 
-**將二維數組轉化為一維：**
+將二維數組轉化為一維：
 
 ```js
 var flattened = [[0, 1], [2, 3], [4, 5]].reduce(
@@ -616,7 +574,8 @@ var flattened = [[0, 1], [2, 3], [4, 5]].reduce(
  []
 );
 ```
-**計算數組中每個元素出現的次數：**
+
+計算數組中每個元素出現的次數：
 
 ```js
 var names = ['Alice', 'Bob', 'Tiff', 'Bruce', 'Alice'];
@@ -634,7 +593,7 @@ var countedNames = names.reduce(function (allNames, name) {
 // {'Alice': 2, 'Bob': 1, 'Tiff': 1, 'Bruce': 1}
 ```
 
-**數組去重：**
+數組去重：
 
 ```js
 let arr = [1,2,1,2,3,5,4,5,3,4,4,4,4];
