@@ -3,10 +3,19 @@
 
 ## 指令式編程
 
+In computer science, imperative programming is a programming paradigm that uses statements that change a program's state. In much the same way that the imperative mood in natural languages expresses commands, an imperative program consists of commands for the computer to perform. Imperative programming focuses on describing how a program operates.
 
+The term is often used in contrast to declarative programming, which focuses on what the program should accomplish without specifying how the program should achieve the result.
 
 ## 宣告式編程
 
+In computer science, declarative programming is a programming paradigm—a style of building the structure and elements of computer programs—that expresses the logic of a computation without describing its control flow.[1]
+
+Many languages that apply this style attempt to minimize or eliminate side effects by describing what the program must accomplish in terms of the problem domain, rather than describe how to accomplish it as a sequence of the programming language primitives[2] (the how being left up to the language's implementation). This is in contrast with imperative programming, which implements algorithms in explicit steps.
+
+## 函數式編程
+
+In computer science, functional programming is a programming paradigm—a style of building the structure and elements of computer programs—that treats computation as the evaluation of mathematical functions and avoids changing-state and mutable data. It is a declarative programming paradigm in that programming is done with expressions or declarations[1] instead of statements. Functional code is idempotent: a function's return value depends only on its arguments, so calling a function with the same value for an argument always produces the same result. This is in contrast to imperative programming where, in addition to a function's arguments, global program state can affect a function's resulting value. Eliminating side effects, that is, changes in state that do not depend on the function inputs, can make understanding a program easier, which is one of the key motivations for the development of functional programming.
 
 
 ## 語句和聲明
@@ -299,7 +308,7 @@ switch(x) {
 }
 ```
 
-let 被創建在包含該聲明的（塊）作用域頂部，一般被稱為 “提升”。與通過  var 聲明的有初始化值 undefined 的變量不同，通過 let 聲明的變量直到它們的定義被執行時才初始化。在變量初始化前訪問該變量會導致 ReferenceError。該變量處在一個自塊頂部到初始化處理的“暫存死區” 中。
+let 被創建在包含該聲明的（塊）作用域頂部，一般被稱為 “提升”。與通過  var 聲明的有初始化值 undefined 的變量不同，通過 let 聲明的變量直到它們的定義被執行時才初始化。在變量初始化前訪問該變量會導致 ReferenceError。該變量處在一個自塊頂部到初始化處理的 “暫存死區” 中。
 
 ```js
 function do_something() {
@@ -324,6 +333,32 @@ function do_something() {
 > function name([param,[, param,[..., param]]]) {
    [statements]
 }
+
+#### `async function`
+
+async function 用來定義一個返回 AsyncFunction 對象的異步函數。異步函數是指通過事件循環異步執行的函數，它會通過一個隱式的 Promise 返回其結果。如果你在代碼中使用了異步函數，就會發現它的語法和結構會更像是標準的同步函數。
+
+```js
+function resolveAfter2Seconds() {
+  return new Promise(resolve => {
+    setTimeout(() => {
+      resolve('resolved');
+    }, 2000);
+  });
+}
+
+async function asyncCall() {
+  console.log('calling');
+  var result = await resolveAfter2Seconds();
+  console.log(result);
+  // expected output: 'resolved'
+}
+
+asyncCall();
+
+> "calling"
+> "resolved"
+```
 
 #### `class`
 
@@ -353,6 +388,14 @@ class Square extends Polygon {
 }
 ```
 
+#### `return`
+
+return 語句終止函數的執行，並返回一個指定的值給函數調用者。
+
+> 語法：`return [[expression]]; `
+
+自動插入分號（ASI）規則會影響 return 語句。在 return 關鍵字和被返回的表達式之間不允許使用行終止符。
+
 ### 迭代器
 
 #### `do...while`
@@ -366,11 +409,72 @@ while (condition);
 
 #### `while`
 
+while 語句可以在某個條件表達式為真的前提下，循環執行指定的一段代碼，直到那個表達式不為真時結束循環。
+
 ```js
 while (length--) {
   if (eq(array[length][0], key)) {
     return length
   }
+}
+```
+
+#### `for`
+
+for 語句用於創建一個循環，它包含了三個可選的表達式，三個可選的表達式包圍在圓括號中並由分號分隔，後跟一個在循環中執行的語句（通常是一個塊語句）。
+
+#### `for...in`
+
+for...in 語句以任意順序遍歷一個對象的除 Symbol 以外的可枚舉屬性。
+
+如果你只要考慮對象本身的屬性，而不是它的原型，那麼使用 getOwnPropertyNames() 或執行 function hasOwnProperty() { [native code] }() 來確定某屬性是否是對象本身的屬性（也能使用 propertyIsEnumerable ）。或者，如果你知道不會有任何外部代碼干擾，您可以使用檢查方法擴展內置原型。
+
+```js
+var triangle = {a: 1, b: 2, c: 3};
+
+function ColoredTriangle() {
+  this.color = 'red';
+}
+
+ColoredTriangle.prototype = triangle;
+
+var obj = new ColoredTriangle();
+
+for (var prop in obj) {
+  if (obj.function hasOwnProperty() { [native code] }(prop)) {
+    console.log(`obj.${prop} = ${obj[prop]}`);
+  }
+}
+
+// Output:
+// "obj.color = red"
+```
+
+#### `for..of`
+
+for...of 語句在可迭代對象（包括 Array，Map，Set，String，TypedArray，arguments 對象等等）上創建一個迭代循環，調用自定義迭代鉤子，併為每個不同屬性的值執行語句
+
+`for...of` 與 `for...in` 的區別：
+
+```js
+Object.prototype.objCustom = function() {};
+Array.prototype.arrCustom = function() {};
+
+let iterable = [3, 5, 7];
+iterable.foo = 'hello';
+
+for (let i in iterable) {
+  console.log(i); // logs 0, 1, 2, "foo", "arrCustom", "objCustom"
+}
+
+for (let i in iterable) {
+  if (iterable.function hasOwnProperty() { [native code] }(i)) {
+    console.log(i); // logs 0, 1, 2, "foo"
+  }
+}
+
+for (let i of iterable) {
+  console.log(i); // logs 3, 5, 7
 }
 ```
 
@@ -419,16 +523,353 @@ for (i = 0; i < 3; i++) {      //The first for statement is labeled "loop1"
 // Notice the difference with the previous continue example
 ```
 
+#### `debugger`
 
+#### `export`
 
-## 運算符和表達式
+在創建 JavaScript 模塊時，export 語句用於從模塊中導出函數、對象或原始值，以便其他程序可以通過 import 語句使用它們。
 
+無論您是否聲明，導出的模塊都處於嚴格模式。 export 語句不能用在嵌入式腳本中。
 
+```js
+// 導出單個特性
+export let name1, name2, …, nameN; // also var, const
+export let name1 = …, name2 = …, …, nameN; // also var, const
+export function FunctionName(){...}
+export class ClassName {...}
+
+// 導出列表
+export {name1, name2, …, nameN};
+
+// 重命名導出
+export {variable1 as name1, variable2 as name2, …, nameN};
+
+// 默認導出
+export default expression;
+export default function (…) { … } // also class, function*
+export default function name1(…) { … } // also class, function*
+export {name1 as default, …};
+
+// Aggregating modules
+export * from …;
+export {name1, name2, …, nameN} from …;
+export {import1 as name1, import2 as name2, …, nameN} from …;
+export {default} from …;
+```
+
+#### `import`
+
+## 表達式和運算符
+
+### 主要表達式
+
+#### `this`
+
+#### `function`
+
+函數表達式
+
+#### `class`
+
+類表達式
+
+#### `function*`
+
+function* 關鍵字定義了一個 generator 函數表達式。
+
+#### `yield`
+
+暫停和恢復 generator 函數。
+
+#### `await`
+
+暫停或恢復執行異步函數，並等待 promise 的 resolve/reject 回調。
+
+#### `[]`
+
+數組初始化 / 字面量語法。
+
+#### `{}`
+
+對象初始化 / 字面量語法。
+
+#### `/ab+c/i`
+
+正則表達式字面量語法。
+
+#### `()`
+
+分組操作符。
+
+圓括號運算符 ( ) 用於控制表達式中的運算優先級。
+
+### 左表達式
+
+左邊的值是賦值的目標。
+
+#### 屬性訪問符
+
+成員運算符提供了對對象的屬性或方法的訪問
+
+(object.property 和 object["property"]).
+
+#### `new`
+
+new 運算符創建了構造函數實例。
+
+#### `new.target`
+
+在構造器中，new.target 指向 new 調用的構造器。
+
+#### `super`
+
+super 關鍵字調用父類的構造器.
+
+#### `...obj`
+
+展開運算符可以將一個可迭代的對象在函數調用的位置展開成為多個參數, 或者在數組字面量中展開成多個數組元素。
+
+### 自增和自減節
+
+前置 / 後置自增運算符和前置 / 後置自減運算符.
+
+#### `A++`
+
+後置自增運算符.
+
+#### `A--`
+
+後置自減運算符.
+
+#### `++A`
+
+前置自增運算符.
+
+#### `--A`
+
+前置自減運算符.
+
+### 一元運算符節
+
+一元運算符只有一個操作數.
+
+#### `delete`
+
+delete 運算符用來刪除對象的屬性.
+
+#### `void`
+
+void 運算符表示表達式放棄返回值.
+
+#### `typeof`
+
+typeof 運算符用來判斷給定對象的類型.
+
+#### `+`
+
+一元加運算符將操作轉換為 Number 類型.
+
+#### `-`
+
+一元減運算符將操作轉換為 Number 類型並取反.
+
+#### `~`
+
+按位非運算符.
+
+#### `!`
+
+邏輯非運算符.
+
+### 算術運算符節
+
+算術運算符以二個數值（字面量或變量）作為操作數，並返回單個數值。
+
+#### `+`
+
+加法運算符.
+
+#### `-`
+
+減法運算符.
+
+#### `/`
+
+除法運算符.
+
+#### `*`
+
+乘法運算符.
+
+#### `%`
+
+取模運算符.
+
+### 關係運算符節
+
+比較運算符比較二個操作數並返回基於比較結果的 Boolean 值。
+
+#### `in`
+
+in 運算符用來判斷對象是否擁有給定屬性.
+
+#### `instanceof`
+
+instanceof 運算符判斷一個對象是否是另一個對象的實例.
+
+#### `<`
+
+小於運算符
+
+#### `>`
+
+大於運算符.
+
+#### `<=`
+
+小於等於運算符.
+
+#### `>=`
+
+大於等於運算符。
+
+### 相等運算符節
+
+如果相等，操作符返回的是 Boolean(布爾) 類型的 true，否則是 false。
+
+#### `==`
+
+相等 運算符.
+
+#### `!=`
+
+不等 運算符.
+
+#### `===`
+
+全等 運算符.
+
+#### `!==`
+
+非全等 運算符.
+
+### 位移運算符節
+
+在二進制的基礎上對數字進行移動操作
+
+#### `<<`
+
+按位左移運算符。
+
+#### `>>`
+
+按位右移運算符。
+
+#### `>>>`
+
+按位無符號右移運算符。
+
+### 二進制位運算符節
+
+二進制運算符將它們的操作數作為 32 個二進制位（0 或 1）的集合，並返回標準的 JavaScript 數值。
+
+#### `&`
+
+二進制位與（AND）。
+
+#### `|`
+
+二進制位或（OR）。
+
+#### `^`
+
+二進制位異或（XOR）。
+
+### 二元邏輯運算符節
+
+邏輯運算符典型的用法是用於 boolean(邏輯) 值運算, 它們返回 boolean 值。
+
+#### `&&`
+
+邏輯與.
+
+#### `||`
+
+邏輯或.
+
+### 條件 (三元) 運算符節
+
+#### `(condition ? ifTrue : ifFalse)`
+
+條件元素運算符把兩個結果中其中一個符合運算邏輯的值返回。
+
+### 賦值運算符節
+賦值元素符會將右邊的操作數的值分配給左邊的操作數，並將其值修改為右邊操作數相等的值。
+
+#### `=`
+
+賦值運算符。
+
+#### `*=`
+賦值乘積。
+
+#### `/=`
+
+賦值商。
+
+#### `%=`
+
+賦值求餘。
+
+#### `+=`
+
+賦值求和。
+
+#### `-=`
+
+賦值求差。
+
+#### `<<=`
+
+左位移。
+
+#### `>>=`
+
+右位移。
+
+#### `>>>=`
+
+無符號右位移。
+
+#### `&=`
+
+賦值與。
+
+#### `^=`
+
+賦值按位異或。
+
+#### `|=`
+
+賦值或。
+
+#### `[a, b] = [1, 2]`
+#### `{a, b} = {a:1, b:2}`
+
+解構賦值允許你分配數組或者對象變量的屬性通過使用規定的語法，其看起來和數組和對象字面量很相似。
+
+### 逗號操作符節
+
+#### `,`
+
+逗號操作符允許在一個判斷狀態中有多個表達式去進行運算並且最後返回最後一個表達式的值。
 
 ## 參考
 
 - https://zh.wikipedia.org/wiki/%E5%AE%A3%E5%91%8A%E5%BC%8F%E7%B7%A8%E7%A8%8B
 - https://wiwiwiki.kfd.me/wiki/%E6%8C%87%E4%BB%A4%E5%BC%8F%E7%B7%A8%E7%A8%8B
+- https://zh.wikipedia.org/wiki/%E5%87%BD%E6%95%B0%E5%BC%8F%E7%BC%96%E7%A8%8B
 - https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Statements
 - https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Operators
 - https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Guide/Expressions_and_Operators
+- https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Operators/Arithmetic_Operators
