@@ -1,8 +1,20 @@
 # 數據類型和數據結構
 
-**轉自**：https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Data_structures
+## 數據類型
 
-## 基本類型（primitive values，原始值）
+最新的 ECMAScript 標準定義了 8 種數據類型:
+
+- 7 種原始類型:
+  - Boolean
+  - Null
+  - Undefined
+  - Number
+  - BigInt
+  - String
+  - Symbol
+- 和 Object
+
+## 基本類型（primitive values 原始值）
 
 基本類型（基本數值、基本數據類型）是一種既非對象也無方法的數據。在 JavaScript 中，共有 7 種基本類型：string，number，bigint，boolean，null，undefined，symbol (ECMAScript 2016 新增)。
 
@@ -10,7 +22,9 @@
 
 所有基本類型的值都是不可改變的。但需要注意的是，基本類型本身和一個賦值為基本類型的變量的區別。變量會被賦予一個新值，而原值不能像數組、對象以及函數那樣被改變。
 
-## 示例 1
+除 Object 以外的所有類型都是不可變的（值本身無法被改變）。例如，與 C 語言不同，JavaScript 中字符串是不可變的（譯註：如，JavaScript 中對字符串的操作一定返回了一個新字符串，原始字符串並沒有被改變）。我們稱這些類型的值為 “原始值”。
+
+### 示例 1
 
 ```js
 // 使用字符串方法不會改變一個字符串
@@ -31,7 +45,7 @@ bar = bar.toUpperCase();       // BAZ
 
 下面的示例將讓你體會到 JavaScript 是如何處理基本類型的。
 
-## 示例 2
+### 示例 2
 
 ```js
 // 基本類型
@@ -58,53 +72,15 @@ console.log(foo);   // 5
 
 你是否認為會得到 7，而不是 5？如果是，請看看代碼是如何運行的：
 
-addTwo 和 addTwo_v2 函數調用時，JavaScript 會檢查標識符 foo 的值，從而準確無誤的找到第一行實例化變量的聲明語句。
-找到以後，JavaScript 將其作為參數傳遞給函數的形參。
-在執行函數體內語句之前，JavaScript 會將傳遞進來的參數（基本類型的值）複製一份，創建一個本地副本。這個副本只存在於該函數的作用域中，我們能夠通過指定在函數中的標識符訪問到它（addTwo 中的 num，addTwo_v2 中的 foo）。
-接下來，函數體中的語句開始執行：
-第一個函數中，創建了本地 num 參數，num 的值加 2，但這個值並不是原來的 foo 的值。
-第二個函數中，創建了本地參數 foo，並將它的值加 2，這個值不是外部 foo 的值。在這種情況下，外部的 foo 變量不能以任何方式被訪問到。這是因為 JavaScript 的詞法作用域（lexical scoping）所導致的變量覆蓋，本地的變量 foo 覆蓋了外部的變量 foo。欲知詳情，請參閱閉包。
-綜上所述，函數中的任何操作都不會影響到最初的 foo，我們操作的只不過是它的副本。
+- addTwo 和 addTwo_v2 函數調用時，JavaScript 會檢查標識符 foo 的值，從而準確無誤的找到第一行實例化變量的聲明語句。
+- 找到以後，JavaScript 將其作為參數傳遞給函數的形參。
+- 在執行函數體內語句之前，**JavaScript 會將傳遞進來的參數（基本類型的值）複製一份**，創建一個本地副本。這個副本只存在於該函數的作用域中，我們能夠通過指定在函數中的標識符訪問到它（addTwo 中的 num，addTwo_v2 中的 foo）。
+- 接下來，函數體中的語句開始執行：
+  - 第一個函數中，創建了本地 num 參數，num 的值加 2，但這個值並不是原來的 foo 的值。
+  - 第二個函數中，創建了本地參數 foo，並將它的值加 2，這個值不是外部 foo 的值。在這種情況下，外部的 foo 變量不能以任何方式被訪問到。這是因為 JavaScript 的詞法作用域（lexical scoping）所導致的變量覆蓋，本地的變量 foo 覆蓋了外部的變量 foo。欲知詳情，請參閱閉包。
+- 綜上所述，函數中的任何操作都不會影響到最初的 foo，我們操作的只不過是它的副本。
+
 這就是為什麼說所有基本類型的值都是無法改變的。
-
-## JavaScript 中的基本類型包裝對象
-
-除了 null 和 undefined 之外，所有基本類型都有其對應的包裝對象：
-
-- String 為字符串基本類型。
-- Number 為數值基本類型。
-- Boolean 為布爾基本類型。
-- Symbol 為字面量基本類型。
-
-這個包裹對象的 function valueOf() { [native code] }() 方法返回基本類型值。
-
-## 動態類型
-
-JavaScript 是一種弱類型或者說動態語言。這意味著你不用提前聲明變量的類型，在程序運行過程中，類型會被自動確定。這也意味著你可以使用同一個變量保存不同類型的數據：
-
-```js
-var foo = 42; // foo is a Number now
-foo = "bar"; // foo is a String now
-foo = true; // foo is a Boolean now
-```
-
-## 數據類型
-
-最新的 ECMAScript 標準定義了 8 種數據類型:
-
-- 7 種原始類型:
-  - Boolean
-  - Null
-  - Undefined
-  - Number
-  - BigInt
-  - String
-  - Symbol
-- 和 Object
-
-## 原始值 (primitive values)
-
-除 Object 以外的所有類型都是不可變的（值本身無法被改變）。例如，與 C 語言不同，JavaScript 中字符串是不可變的（譯註：如，JavaScript 中對字符串的操作一定返回了一個新字符串，原始字符串並沒有被改變）。我們稱這些類型的值為 “原始值”。
 
 ### 布爾類型
 
@@ -120,7 +96,7 @@ Null 類型只有一個值： null。
 
 ### 數字類型
 
-根據 ECMAScript 標準，JavaScript 中只有一種數字類型：基於 IEEE 754 標準的雙精度 64 位二進制格式的值（-(263 -1) 到 263 -1）。** 它並沒有為整數給出一種特定的類型 **。除了能夠表示浮點數外，還有一些帶符號的值：+Infinity，-Infinity 和 NaN (非數值，Not-a-Number)。
+根據 ECMAScript 標準，JavaScript 中只有一種數字類型：基於 IEEE 754 標準的雙精度 64 位二進制格式的值（-(263 -1) 到 263 -1）。**它並沒有為整數給出一種特定的類型**。除了能夠表示浮點數外，還有一些帶符號的值：+Infinity，-Infinity 和 NaN (非數值，Not-a-Number)。
 
 要檢查值是否大於或小於 +/-Infinity，你可以使用常量 Number.MAX_VALUE 和 Number.MIN_VALUE。另外在 ECMAScript 6 中，你也可以通過 Number.isSafeInteger() 方法還有 Number.MAX_SAFE_INTEGER 和 Number.MIN_SAFE_INTEGER 來檢查值是否在雙精度浮點數的取值範圍內。 超出這個範圍，JavaScript 中的數字不再安全了，也就是隻有 second mathematical interger 可以在 JavaScript 數字類型中正確表現。
 
@@ -145,6 +121,17 @@ JavaScript 的字符串類型用於表示文本數據。它是一組 16 位的�
 ### 符號類型
 
 符號 (Symbols) 是 ECMAScript 第 6 版新定義的。符號類型是唯一的並且是不可修改的，並且也可以用來作為 Object 的 key 的值 (如下)。在某些語言當中也有類似的原子類型 (Atoms)。你也可以認為為它們是 C 裡面的枚舉類型。
+
+### JavaScript 中的基本類型包裝對象
+
+除了 null 和 undefined 之外，所有基本類型都有其對應的包裝對象：
+
+- String 為字符串基本類型。
+- Number 為數值基本類型。
+- Boolean 為布爾基本類型。
+- Symbol 為字面量基本類型。
+
+這個包裹對象的 function valueOf() { [native code] }() 方法返回基本類型值。
 
 ## 對象
 
@@ -177,8 +164,6 @@ JSON (JavaScript Object Notation) 是一種輕量級的數據交換格式，來�
 JavaScript 有一個內置對象的標準庫。
 
 #### 標準內置對象的分類
-
-**转自**：https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects
 
 ##### 值屬性
 
@@ -315,3 +300,9 @@ JavaScript 有一個內置對象的標準庫。
 ##### 其他
 
 - arguments
+
+## 参考
+
+- https://developer.mozilla.org/zh-CN/docs/Glossary/Primitive
+- https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Data_structures
+- https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects
