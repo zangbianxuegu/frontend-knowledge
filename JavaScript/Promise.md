@@ -205,3 +205,12 @@ renderAll().then(function (value) {
 // length: 2
 // __proto__: Array(0) 
 ```
+
+=========================================================
+
+## 待补充
+
+[MDN：使用 Promise](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Guide/Using_promises)
+[MDN：Promise](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Promise)
+《你不知道的 JavaScript 中》
+
